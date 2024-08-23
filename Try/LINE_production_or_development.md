@@ -57,7 +57,7 @@ develompent(テスト)↔︎production(本番)の切り替え作業を最小限�
 ### 2.callback_URLの設定
 - 【credentials.yml.enc】
 sorcery Externalドキュメント通りにcallback_urlを記載<br>
-*参考資料<br>
+*参考記事<br>
   @[card](https://github.com/Sorcery/sorcery/wiki/External))
   ```
   #開発環境のみの設定
@@ -71,16 +71,22 @@ sorcery Externalドキュメント通りにcallback_urlを記載<br>
   ```
   - 秘匿情報の管理についてcredentials.yml.enc選択理由
     - rails newでcredentials.yml.encとmaster.keyはセットで生成され、新規ファイル作成が不要でヒューマンエラーを防げる<br>
-  *参考資料<br>
+  *参考記事<br>
     @[card](https://zenn.dev/kame0707/articles/ef2453f31fe236)
 - 【config/initializers/sorcery.rb】
+訂正(2024/08/24)：シンプルな記載へリファクタリング
+*参考資料<br>
+@[card](https://api.rubyonrails.org/classes/Rails.html#method-c-env)
+
+  ~~if Rails.env.production?~~
+    ~~config.line.callback_url = Rails.application.credentials.dig(:production, :line, :callback_url)~~
+  ~~else~~
+    ~~config.line.callback_url = Rails.application.credentials.dig(:development, :line, :callback_url)~~
+  ~~end~~
   ```
-  if Rails.env.production?
-    config.line.callback_url = Rails.application.credentials.dig(:production, :line, :callback_url)
-  else
-    config.line.callback_url = Rails.application.credentials.dig(:development, :line, :callback_url)
-  end
+  config.line.callback_url = Rails.application.credentials.dig(Rails.env, :line, :callback_url)
   ```
+  
   
 - 【LINE Developers>console>LINEログイン設定>コールバックURL】の登録
   - 改行で複数URL登録可能:上と同じURLを記載
