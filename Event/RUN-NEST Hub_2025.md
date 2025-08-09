@@ -81,4 +81,7 @@
 
 ## 参考文献
 - [Eclipseのダウンロード](https://willbrains.jp/index.html#/pleiades_distros2025.html)
-- 
+- [spring初挑戦時の参考記事](https://medium-company.com/spring-boot%ef%bc%8bjpa%e3%81%a7%e3%83%87%e3%83%bc%e3%82%bf%e3%83%99%e3%83%bc%e3%82%b9%e3%81%ab%e6%8e%a5%e7%b6%9a%e3%81%99%e3%82%8b%e6%96%b9%e6%b3%95/)
+- [JPAのアーキテクチャ](https://spring-boot.jp/database/overview/64#mokuji_8)
+- [EclipseからGithubへpush](https://qiita.com/takeshi_1016/items/30429a357884c4238f72)
+- [springリファレンス/MVC](https://spring-boot.jp/mvc/overview/12)
