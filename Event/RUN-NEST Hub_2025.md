@@ -68,6 +68,53 @@
 ## 内容
 
 ### 1.AWS を使ったデプロイ体験談
+基本的には公式を参考に下記手順で実施
+1. 作成アプリのdockerイメージをローカルへbuildし動作確認
+    ```markdown
+    docker build -t pitatoku:latest .
+    docker run -p 8085:8080 pitatoku:latest
+    http://localhost:8085/
+    ```
+    
+2. ローカル環境からAmazon ECRへイメージをpush
+  ⅰ Amazon CLIをインストール
+  ⅱ ECRへpush 
+    ```markdown
+    aws configure
+    aws ecr get-login-password --region ap-northeast-1 | docker login --username AWS --password-stdin <アカウントID>.dkr.ecr.ap-northeast-1.amazonaws.com
+    docker tag pitatoku:latest <アカウントID>.dkr.ecr.ap-northeast-1.amazonaws.com/pitatoku:latest
+    docker push <アカウントID>.dkr.ecr.ap-northeast-1.amazonaws.com/pitatoku:latest
+    ```
+    
+3. EC2へdockerをインストールし、イメージをpullしてブラウザで動作確認
+  ⅰ Dockerインストール
+    ```markdown
+    ssh -i pitatoku-dev8.pem ec2-user@<パブリックID>
+    sudo yum update -y
+    sudo yum install -y docker
+    sudo service docker start
+    sudo usermod -a -G docker ec2-user
+    exit
+    ```
+  ⅱ ECRのイメージをEC2内でpull
+    ```markdown
+    aws configure
+    aws ecr get-login-password --region ap-northeast-1 | docker login --username AWS --password-stdin <アカウントID>.dkr.ecr.ap-northeast-1.amazonaws.com
+    docker pull <アカウントID>.dkr.ecr.ap-northeast-1.amazonaws.com/pitatoku:latest
+    docker run -d -p 8080:8080 <アカウントID>.dkr.ecr.ap-northeast-1.amazonaws.com/pitatoku:latest  
+    ```
+  ⅲ ブラウザで確認
+    ```
+    http://<パブリックIP>:8080/
+    ```
+
+
+
+i. EC2の起動（インスタンス・キーペア作成、セキュリティグループ設定）
+ⅱ. ssh接続確認（AWS CLI使用しAmazon ECRへリポジトリ作成、ログイン・ログアウト）
+ⅲ. 試しにローカルでpush（aws configureで認証、ログイン、タグ付け、push）
+ⅳ. 本番環境へpush(ssh接続、aws configureで認証、EC2内にもDocker インストール・再起動、ログイン、タグ付け、push)
+
 
 ### 2.AWS SAA 資格取得の道のり
 
