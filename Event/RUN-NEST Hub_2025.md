@@ -89,7 +89,7 @@
 3. EC2へdockerをインストールし、イメージをpullしてブラウザで動作確認
   ⅰ Dockerインストール
     ```markdown
-    ssh -i pitatoku-dev8.pem ec2-user@<パブリックID>
+    ssh -i pitatoku_0820.pem ec2-user@<パブリックID>
     sudo yum update -y
     sudo yum install -y docker
     sudo service docker start
@@ -107,7 +107,17 @@
     ```
     http://<パブリックIP>:8080/
     ```
+### やらかし事例
+- タイトル：pemファイルをGitHubにpushしてしまう...
+- 内容：ssh接続で必要になるpemファイルをgitignoreで追跡対象外としGitHubへpushしたつもりが...
+gitignoreの設定がうまくいっておらずpushされており、GitHubからのメールで発覚...!!
+「RSA Private Key exposed on GitHub」
+ん？設定したよなgitignore...アアッあがってる...!!
+- 対応：gitignoreで.pemとしていたが*.pemへ変更。さらにキーペアを再度作成し、インスタンスも作成し直し（インスタンスそのままでキーペア変える方法もあるみたいでしたが、インスタンスの種類？によっては表示されないようで、作り直しました）
+- 考察：gitignore設定時に通常ならファイル名がグレーアウトするが、ファイル作成→gitignore設定だったため反映されていないのだろうと軽率な判断で`git rm --cached -r ...`で追跡対象外にしてpushしてしまった
 
+
+./gradlew bootRun --info 
 
 
 i. EC2の起動（インスタンス・キーペア作成、セキュリティグループ設定）
